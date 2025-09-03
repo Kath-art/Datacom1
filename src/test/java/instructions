@@ -1,0 +1,4 @@
+Write automated tests that will find any bugs, validate the page loading, and validate that the
+controls work (i.e. the navigation works).
+The suggested framework Playwright with jUnit.
+BDD is not required but preferred.
