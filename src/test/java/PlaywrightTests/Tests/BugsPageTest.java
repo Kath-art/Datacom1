@@ -1,56 +1,41 @@
 package PlaywrightTests.Tests;
 
+import PlaywrightTests.BaseTest.BaseTest;
 import PlaywrightTests.Pages.BugsPage;
 import com.microsoft.playwright.junit.UsePlaywright;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Test;
 
 
 @UsePlaywright
-public class BugsPageTest {
-
-
-//    TODO add these to the base test
-//    @AfterAll
-//    static void closeBrowser() {
-//        playwright.close();
-//    }
-//
-//    @BeforeEach
-//    void createContextAndPage() {
-//        context = browser.newContext();
-//    }
-//
-//    @AfterEach
-//    void closeContext() {
-//        context.close();
-//    }
-
+public class BugsPageTest extends BaseTest {
 
     @Test
     public void completeFormWithValidValues() {
-        BugsPage bugsPage = new BugsPage();
-
+        BugsPage bugsPage = new BugsPage(page);
         // Given I navigate to the page
         try {
-            bugsPage.navigateToBugsPage();
+            bugsPage.navigateToBugsForm();
             bugsPage.verifyPageTitleIsVisible();
 
 
             // When I enter expected values
             bugsPage.enterFirstName("Sally"); // TODO use a parameterised test to get and use test data from the resources folder
             bugsPage.enterLastName("Smith");
-            bugsPage.enterPhoneNumber("123222");
+            bugsPage.enterPhoneNumber("0123456789");
             bugsPage.selectCountry("Argentina");
             bugsPage.enterEmailAddress("sally.smith@gmail.com");
             bugsPage.enterPassword("password");
 
             // And check the terms and conditions and then register
-            // bugsPage.clickTermsAndConditionsChkBox(); not needed to register and causing timeout - removed from test for now.
             bugsPage.clickRegisterBtn();
 
             // Then the page displays that I have successfully registered
-            //bugsPage.assertResultsSectionSuccessTextIsVisible();
-            //bugsPage.assertFirstNameIsCorrect("Sally");
+            bugsPage.assertSuccessMessageIsCorrectInResults();
+            bugsPage.assertFirstNameIsCorrectInResults();
+            bugsPage.assertLastNameIsCorrectInResults();
+            bugsPage.assertPhoneNumberIsCorrectInResults();
+            bugsPage.assertCountryIsCorrectInResults();
+            bugsPage.assertEmailAddressIsCorrectInResults();
 
             // TODO take a screenshot
         } catch (Exception e) {
