@@ -14,6 +14,7 @@ public class BugsPage {
     BrowserContext context = browser.newContext();
     Page page = browser.newPage();
 
+    // Locators
     final Locator bugsPageHeading = page.getByRole(AriaRole.HEADING, new Page.GetByRoleOptions().setName("CHALLENGE - Spot the BUGS!"));
     final Locator firstName = page.locator("#firstName");
     final Locator lastName = page.locator("#lastName");
@@ -24,10 +25,11 @@ public class BugsPage {
     final Locator termsAndConditionsChkBox = page.getByPlaceholder("I agree with the terms and conditions");
     final Locator registerBtn = page.locator("#registerBtn");
     final Locator firstNameInResults = page.locator("#message");
+    final Locator pageTitle = page.locator("#content > h2");
 
     // note to self, may have been better to use getByLabel for all, as this is best for filling in forms
 
-
+    // Filling in the form
     public void navigateToBugsPage() {
         page.navigate("https://qa-practice.netlify.app/bugs-form");
     }
@@ -57,10 +59,11 @@ public class BugsPage {
     }
 
 
-
-    public void verifyPageTitle() {
+    // Actions
+    public void verifyPageTitleIsVisible() {
         assertThat(bugsPageHeading).isVisible();
     }
+
 
     public void clickTermsAndConditionsChkBox() {
         termsAndConditionsChkBox.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));

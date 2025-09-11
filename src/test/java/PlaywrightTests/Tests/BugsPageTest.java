@@ -33,7 +33,8 @@ public class BugsPageTest {
         // Given I navigate to the page
         try {
             bugsPage.navigateToBugsPage();
-            bugsPage.verifyPageTitle();
+            bugsPage.verifyPageTitleIsVisible();
+
 
             // When I enter expected values
             bugsPage.enterFirstName("Sally"); // TODO use a parameterised test to get and use test data from the resources folder
