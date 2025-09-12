@@ -2,11 +2,8 @@ package PlaywrightTests.Tests;
 
 import PlaywrightTests.BaseTest.BaseTest;
 import PlaywrightTests.Pages.BugsPage;
-import com.microsoft.playwright.Page;
 import com.microsoft.playwright.junit.UsePlaywright;
 import org.junit.jupiter.api.Test;
-
-import java.nio.file.Paths;
 
 @UsePlaywright
 public class BugsPageTest extends BaseTest {
@@ -40,9 +37,6 @@ public class BugsPageTest extends BaseTest {
             bugsPage.assertPhoneNumberIsCorrectInResults();
             bugsPage.assertCountryIsCorrectInResults();
             bugsPage.assertEmailAddressIsCorrectInResults();
-
-            page.screenshot(new Page.ScreenshotOptions()
-                    .setPath(Paths.get("bugsPageScreenshot.png")));
 
         } catch (Exception e) {
             throw new RuntimeException(e);

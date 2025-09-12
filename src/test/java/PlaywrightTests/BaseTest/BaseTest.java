@@ -1,12 +1,13 @@
 package PlaywrightTests.BaseTest;
 
 import com.microsoft.playwright.*;
-
 import org.junit.jupiter.api.*;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 public class BaseTest {
-    // visible to classes in the same package and to its sub-classes.
-    // more accessible than private, but not as much as public
     protected static Playwright playwright;
     protected static Browser browser;
     protected BrowserContext context;
@@ -15,9 +16,7 @@ public class BaseTest {
     @BeforeAll
     static void launchBrowser() {
         playwright = Playwright.create();
-        browser = playwright.chromium().launch(
-                new BrowserType.LaunchOptions()
-                        .setHeadless(true)   // set to false if you want to see the browser
+        browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false)   // set to false if you want to see the browser
         );
     }
 
@@ -34,7 +33,23 @@ public class BaseTest {
     }
 
     @AfterEach
-    void closeContext() {
+    void takeScreenshotAndCloseContext(TestInfo testInfo) throws Exception {
+        // Folder where screenshots will be saved
+        Path screenshotDir = Paths.get("screenshots");
+        Files.createDirectories(screenshotDir); // create folder if it doesn't exist
+
+        // Generate a unique filename: methodName + timestamp
+        String fileName = testInfo.getTestMethod()
+                .orElseThrow(() -> new IllegalStateException("Test method info not available"))
+                .getName()
+                + "-" + System.currentTimeMillis() + ".png";
+        Path screenshotPath = screenshotDir.resolve(fileName);
+
+        // Take the screenshot
+        page.screenshot(new Page.ScreenshotOptions()
+                .setFullPage(true)
+                .setPath(screenshotPath));
+
         context.close();
     }
 }
