@@ -5,18 +5,19 @@ import PlaywrightTests.Pages.BugsPage;
 import com.microsoft.playwright.junit.UsePlaywright;
 import org.junit.jupiter.api.Test;
 
-
 @UsePlaywright
 public class BugsPageTest extends BaseTest {
 
     @Test
     public void completeFormWithValidValues() {
         BugsPage bugsPage = new BugsPage(page);
+
         // Given I navigate to the page
         try {
             bugsPage.navigateToBugsForm();
             bugsPage.verifyPageTitleIsVisible();
 
+            bugsPage.assertThatUrlContainsBugsPage("bugs-form");
 
             // When I enter expected values
             bugsPage.enterFirstName("Sally"); // TODO use a parameterised test to get and use test data from the resources folder

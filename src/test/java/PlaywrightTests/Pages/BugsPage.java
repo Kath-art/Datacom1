@@ -2,9 +2,11 @@ package PlaywrightTests.Pages;
 
 import com.microsoft.playwright.*;
 import com.microsoft.playwright.options.AriaRole;
+import org.junit.platform.commons.util.StringUtils;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BugsPage {
 
@@ -90,6 +92,13 @@ public class BugsPage {
     }
 
     // Assertions
+    public void assertThatUrlContainsBugsPage(String pageName) {
+        if (StringUtils.isNotBlank(pageName)) {
+            String currentUrl = page.url();
+            assertTrue(currentUrl.contains(pageName));
+        }
+    }
+
     public void assertSuccessMessageIsCorrectInResults() {
         assertThat(successMessage).hasText("Successfully registered the following information");
     }
