@@ -16,7 +16,9 @@ public class BaseTest {
     @BeforeAll
     static void launchBrowser() {
         playwright = Playwright.create();
-        browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false)   // set to false if you want to see the browser
+        browser = playwright.chromium()
+                .launch(new BrowserType.LaunchOptions()
+                        .setHeadless(false)   // set to false if you want to see the browser
         );
     }
 

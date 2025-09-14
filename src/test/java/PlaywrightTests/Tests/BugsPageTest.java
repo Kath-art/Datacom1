@@ -3,13 +3,18 @@ package PlaywrightTests.Tests;
 import PlaywrightTests.BaseTest.BaseTest;
 import PlaywrightTests.Pages.BugsPage;
 import com.microsoft.playwright.junit.UsePlaywright;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 
 @UsePlaywright
 public class BugsPageTest extends BaseTest {
 
-    @Test
-    public void completeFormWithValidValues() {
+
+    // todo - change approach so that each form component is tested.
+
+    @ParameterizedTest(name = "Completing the form with valid values")
+    @CsvFileSource(resources = "testData/validTestData.csv")
+    public void completeFormWithValidValues(String firstName, String lastName, String phoneNumber, String country, String email, String password) {
         BugsPage bugsPage = new BugsPage(page);
 
         // Given I navigate to the page
@@ -20,12 +25,12 @@ public class BugsPageTest extends BaseTest {
             bugsPage.assertThatUrlContainsBugsPage("bugs-form");
 
             // When I enter expected values
-            bugsPage.enterFirstName("Sally"); // TODO use a parameterised test to get and use test data from the resources folder
-            bugsPage.enterLastName("Smith");
-            bugsPage.enterPhoneNumber("0123456789");
-            bugsPage.selectCountry("Argentina");
-            bugsPage.enterEmailAddress("sally.smith@gmail.com");
-            bugsPage.enterPassword("password");
+            bugsPage.enterFirstName(firstName);
+            bugsPage.enterLastName(lastName);
+            bugsPage.enterPhoneNumber(phoneNumber);
+            bugsPage.selectCountry(country);
+            bugsPage.enterEmailAddress(email);
+            bugsPage.enterPassword(password);
 
             // And check the terms and conditions and then register
             bugsPage.clickRegisterBtn();
