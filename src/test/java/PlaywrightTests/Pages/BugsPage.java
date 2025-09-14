@@ -1,10 +1,12 @@
 package PlaywrightTests.Pages;
 
-import com.microsoft.playwright.*;
+import com.microsoft.playwright.Locator;
+import com.microsoft.playwright.Page;
 import com.microsoft.playwright.options.AriaRole;
 import org.junit.platform.commons.util.StringUtils;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
+import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -12,7 +14,6 @@ public class BugsPage {
 
     private final Page page;
 
-    // Locators defined once in constructor
     private final Locator bugsPageHeading;
     private final Locator firstName;
     private final Locator lastName;
@@ -28,16 +29,12 @@ public class BugsPage {
     private final Locator resultPhone;
     private final Locator resultCountry;
     private final Locator resultEmail;
+    private final Locator resultsSection;
 
 
     public BugsPage(Page page) {
         this.page = page;
-
-        // Initialise locators
-        this.bugsPageHeading = page.getByRole(
-                AriaRole.HEADING,
-                new Page.GetByRoleOptions().setName("CHALLENGE - Spot the BUGS!")
-        );
+        this.bugsPageHeading = page.getByRole(AriaRole.HEADING, new Page.GetByRoleOptions().setName("CHALLENGE - Spot the BUGS!"));
         this.firstName = page.locator("#firstName");
         this.lastName = page.locator("#lastName");
         this.phoneNumber = page.getByPlaceholder("Enter phone number");
@@ -52,6 +49,7 @@ public class BugsPage {
         this.resultPhone = page.locator("#resultPhone");
         this.resultCountry = page.locator("#country");
         this.resultEmail = page.locator("#resultEmail");
+        this.resultsSection = page.locator("#results-section");
     }
 
     // Actions
@@ -103,23 +101,27 @@ public class BugsPage {
         assertThat(successMessage).hasText("Successfully registered the following information");
     }
 
-    public void assertFirstNameIsCorrectInResults() {
-        assertEquals("First Name: " + "Sally", resultFn.textContent().trim());
+    public void assertFirstNameIsCorrectInResults(String expectedFirstName) {
+        assertEquals("First Name: " + expectedFirstName, resultFn.textContent().trim());
     }
 
-    public void assertLastNameIsCorrectInResults() {
-        assertEquals("Last Name: " + "Smit", resultLn.textContent().trim());
+    public void assertLastNameIsCorrectInResults(String expectedLastName) {
+        assertEquals("Last Name: " + expectedLastName, resultLn.textContent().trim());
     }
 
-    public void assertPhoneNumberIsCorrectInResults() {
-        assertEquals("Phone Number: " + "01234567810", resultPhone.textContent().trim());
+    public void assertPhoneNumberIsCorrectInResults(String expectedPhoneNumber) {
+        assertEquals("Phone Number: " + expectedPhoneNumber, resultPhone.textContent().trim());
     }
 
-    public void assertCountryIsCorrectInResults() {
-        assertEquals("Country: " + "Argentina", resultCountry.textContent().trim());
+    public void assertCountryIsCorrectInResults(String expectedCountry) {
+        assertEquals("Country: " + expectedCountry, resultCountry.textContent().trim());
     }
 
-    public void assertEmailAddressIsCorrectInResults() {
-        assertEquals("Email: " + "sally.smith@gmail.com", resultEmail.textContent().trim());
+    public void assertEmailAddressIsCorrectInResults(String expectedEmailAddress) {
+        assertEquals("Email: " + expectedEmailAddress, resultEmail.textContent().trim());
+    }
+
+    public void assertPasswordIsNotDisplayedInResults(String expectedPassword) {
+        resultsSection.allTextContents().stream().map(String::trim).forEach(divText -> assertFalse(divText.contains(expectedPassword)));
     }
 }

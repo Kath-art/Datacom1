@@ -37,11 +37,12 @@ public class BugsPageTest extends BaseTest {
 
             // Then the page displays that I have successfully registered
             bugsPage.assertSuccessMessageIsCorrectInResults();
-            bugsPage.assertFirstNameIsCorrectInResults();
-            bugsPage.assertLastNameIsCorrectInResults();
-            bugsPage.assertPhoneNumberIsCorrectInResults();
-            bugsPage.assertCountryIsCorrectInResults();
-            bugsPage.assertEmailAddressIsCorrectInResults();
+            bugsPage.assertFirstNameIsCorrectInResults(firstName);
+            bugsPage.assertLastNameIsCorrectInResults(lastName); // expected bug "Smit" not "Smith" in the results table.
+            bugsPage.assertPhoneNumberIsCorrectInResults(phoneNumber); // expected phone number is failing.
+            bugsPage.assertCountryIsCorrectInResults(country);
+            bugsPage.assertEmailAddressIsCorrectInResults(email);
+            bugsPage.assertPasswordIsNotDisplayedInResults(password);
 
         } catch (Exception e) {
             throw new RuntimeException(e);
